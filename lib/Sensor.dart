@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:manual_camera/camera.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 import 'chart.dart';
@@ -207,17 +207,23 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
 
   Future<void> _initController() async {
     try {
+      debugPrint("1");
       List _cameras = await availableCameras();
-      _controller = CameraController(_cameras.first, ResolutionPreset.low);
+      debugPrint("2");
+      _controller = CameraController(_cameras.first, ResolutionPreset.high);
+      debugPrint("3");
       await _controller.initialize();
+      debugPrint("4");
       Future.delayed(Duration(milliseconds: 100)).then((onValue) {
-        _controller.flash(true);
+        _controller.setFlashMode(FlashMode.torch);
       });
+      debugPrint("5");
       _controller.startImageStream((CameraImage image) {
         _image = image;
       });
-    } catch (Exception) {
-      debugPrint(Exception);
+    } catch (exception) {
+      debugPrint("error");
+      debugPrint(exception.toString());
     }
   }
 
