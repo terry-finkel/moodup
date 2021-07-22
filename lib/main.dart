@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quaderi/AutoEvaluate.dart';
 import 'package:quaderi/Evaluate.dart';
+import 'package:quaderi/Exercises.dart';
 import 'package:quaderi/GetInfo.dart';
 import 'package:quaderi/Home.dart';
 import 'package:quaderi/Result.dart';
@@ -15,8 +15,8 @@ class MoodUp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Home(),
-        '/autoEvaluate': (context) => AutoEvaluate(),
         '/evaluate': (context) => Evaluate(),
+        '/exercises': (context) => Exercises(),
         '/getInfo': (context) => GetInfo(),
         '/result': (context) => Result(),
         '/sensor': (context) => Sensor(),

@@ -53,7 +53,7 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
-    print("${arguments['stress']}");
+    final double _stress = arguments['stress'];
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -61,73 +61,82 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
         child: Column(
           children: <Widget>[
             Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
+              flex: 1,
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(18),
+                  ),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      _controller != null && _toggled
+                          ? AspectRatio(
+                        aspectRatio:
+                        _controller.value.aspectRatio,
+                        child: CameraPreview(_controller),
+                      )
+                          : Container(
                         padding: EdgeInsets.all(12),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(18),
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              _controller != null && _toggled
-                                  ? AspectRatio(
-                                aspectRatio:
-                                _controller.value.aspectRatio,
-                                child: CameraPreview(_controller),
-                              )
-                                  : Container(
-                                padding: EdgeInsets.all(12),
-                                alignment: Alignment.center,
-                                color: Colors.grey,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(4),
-                                child: Text(
-                                  _toggled
-                                      ? "Cover both the camera and the flash with your finger"
-                                      : "Camera feed will display here",
-                                  style: TextStyle(
-                                      backgroundColor: _toggled
-                                          ? Colors.white
-                                          : Colors.transparent),
-                                  textAlign: TextAlign.center,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+                        alignment: Alignment.center,
+                        color: Colors.grey,
                       ),
+                      Container(alignment: Alignment.center, padding: EdgeInsets.all(4)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: _toggled
+                  ? Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Rythme cardiaque moyen:",
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                        Text(
+                          (_bpm > 50 && _bpm < 180 ? _bpm.toString() : "--"),
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      ],
+                    ))
+                  : SizedBox.shrink()
+            ),
+            Center(
+              child: _toggled
+                ? Text(
+                  "Placez votre index de façon à couvrir la caméra et le flash.\nUne fois que votre rythme s'est stabilise, appuyez sur le bouton ci-dessous.",
+                  style: TextStyle(
+                      backgroundColor: _toggled
+                          ? Colors.white
+                          : Colors.transparent),
+                  textAlign: TextAlign.center
+                )
+                : SizedBox.shrink()
+            ),
+            Center(
+              child: _toggled
+                ? ElevatedButton(
+                    child: Text('Continuer'),
+                    onPressed: () {
+                      if (_bpm > 50 && _bpm < 180) {
+                        _untoggle();
+                        Navigator.pushNamed(context, '/exercises',
+                            arguments: { "stress": _stress, "bpm": _bpm });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: (_bpm > 50 && _bpm < 180 ? Colors.blue : Colors.grey)
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "Estimated BPM",
-                                style: TextStyle(fontSize: 18, color: Colors.grey),
-                              ),
-                              Text(
-                                (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
-                                style: TextStyle(
-                                    fontSize: 32, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          )),
-                    ),
-                  ],
-                )),
+                  )
+                : SizedBox.shrink()
+            ),
             Expanded(
               flex: 1,
               child: Center(
@@ -247,12 +256,6 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
   }
 
   void _updateBPM() async {
-    // Bear in mind that the method used to calculate the BPM is very rudimentar
-    // feel free to improve it :)
-
-    // Since this function doesn't need to be so "exact" regarding the time it executes,
-    // I only used the a Future.delay to repeat it from time to time.
-    // Ofc you can also use a Timer object to time the callback of this function
     List<SensorValue> _values;
     double _avg;
     int _n;

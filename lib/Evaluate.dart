@@ -17,12 +17,12 @@ class EvaluateView extends State<Evaluate> with SingleTickerProviderStateMixin {
         title: Text("Mood Up!"),
       ),
       backgroundColor: Colors.white,
-      body: Center(
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Nous vous invitons à évaluer votre niveau de stress.\nDe 0 (pas de stress) à 10 (stress le plus fort que j\'ai connu).',
+                'Nous vous invitons à évaluer votre niveau de stress.\n\nDe 0 (pas de stress),\nà 10 (stress le plus fort que j\'ai connu).',
               textAlign: TextAlign.center,
             ),
             Slider(

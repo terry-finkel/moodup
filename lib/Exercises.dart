@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AutoEvaluate extends StatefulWidget {
+class Exercises extends StatefulWidget {
   @override
-  AutoEvaluateView createState() {
-    return AutoEvaluateView();
+  ExercisesView createState() {
+    return ExercisesView();
   }
 }
 
-class AutoEvaluateView extends State<AutoEvaluate> with SingleTickerProviderStateMixin {
+class ExercisesView extends State<Exercises> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
