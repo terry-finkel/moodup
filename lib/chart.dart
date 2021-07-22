@@ -17,14 +17,14 @@ class Chart extends StatelessWidget {
         data: _data,
       )
     ],
-        animate: false,
-        primaryMeasureAxis: charts.NumericAxisSpec(
-          tickProviderSpec:
-          charts.BasicNumericTickProviderSpec(zeroBound: false),
-          renderSpec: charts.NoneRenderSpec(),
-        ),
-        domainAxis: new charts.DateTimeAxisSpec(
-            renderSpec: new charts.NoneRenderSpec()));
+      animate: false,
+      primaryMeasureAxis: charts.NumericAxisSpec(
+        tickProviderSpec:
+        charts.BasicNumericTickProviderSpec(zeroBound: false),
+        renderSpec: charts.NoneRenderSpec(),
+      ),
+      domainAxis: new charts.DateTimeAxisSpec(
+          renderSpec: new charts.NoneRenderSpec()));
   }
 }
 

@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+
+class Evaluate extends StatefulWidget {
+  @override
+  EvaluateView createState() {
+    return EvaluateView();
+  }
+}
+
+class EvaluateView extends State<Evaluate> with SingleTickerProviderStateMixin {
+  double _stress = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Mood Up!"),
+      ),
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+                'Nous vous invitons à évaluer votre niveau de stress.\nDe 0 (pas de stress) à 10 (stress le plus fort que j\'ai connu).',
+              textAlign: TextAlign.center,
+            ),
+            Slider(
+                value: _stress,
+                min: 0,
+                max: 10,
+                divisions: 10,
+                label: _stress.round().toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    _stress = value;
+                  });
+                }),
+            ElevatedButton(
+              child: Text('Continuer'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/sensor', arguments: { "stress": _stress });
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

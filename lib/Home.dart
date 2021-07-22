@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,12 +23,12 @@ class HomeView extends State<Home> with SingleTickerProviderStateMixin {
             final prefs = await SharedPreferences.getInstance();
             int age = prefs.getInt("age") ?? -1;
             int weight = prefs.getInt("weight") ?? -1;
-            String sex = prefs.getString("sex") ?? "?";
+            String sex = prefs.getString("gender") ?? "?";
 
             if (age == -1 || weight == -1 || sex == "?") {
               Navigator.pushNamed(context, '/getInfo');
             } else {
-              Navigator.pushNamed(context, '/sensor');
+              Navigator.pushNamed(context, '/evaluate');
             }
           },
         )

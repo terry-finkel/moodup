@@ -52,6 +52,9 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
+    print("${arguments['stress']}");
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
