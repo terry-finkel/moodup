@@ -80,12 +80,15 @@ class GetInfoView extends State<GetInfo> with SingleTickerProviderStateMixin {
               },
             ),
             (_age > 0 && _weight > 0) ? ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/sensor');
-                },
-                child: Icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/sensor', arguments: {
+                  "previousBPM": -1.0,
+                  "previousStress": -1.0
+                });
+              },
+              child: Icon(
                   Icons.navigate_next_rounded
-                ),
+              ),
             ) : SizedBox.shrink()
           ],
         ),

@@ -17,21 +17,24 @@ class HomeView extends State<Home> with SingleTickerProviderStateMixin {
       ),
       backgroundColor: Colors.white,
       body: Center(
-        child: ElevatedButton(
-          child: Text('Bonjour. Nous allons vous aider.'),
-          onPressed: () async {
-            final prefs = await SharedPreferences.getInstance();
-            int age = prefs.getInt("age") ?? -1;
-            int weight = prefs.getInt("weight") ?? -1;
-            String sex = prefs.getString("gender") ?? "?";
+          child: ElevatedButton(
+            child: Text('Bonjour. Nous allons vous aider.'),
+            onPressed: () async {
+              final prefs = await SharedPreferences.getInstance();
+              int age = prefs.getInt("age") ?? -1;
+              int weight = prefs.getInt("weight") ?? -1;
+              String sex = prefs.getString("gender") ?? "?";
 
-            if (age == -1 || weight == -1 || sex == "?") {
-              Navigator.pushNamed(context, '/getInfo');
-            } else {
-              Navigator.pushNamed(context, '/evaluate');
-            }
-          },
-        )
+              if (age == -1 || weight == -1 || sex == "?") {
+                Navigator.pushNamed(context, '/getInfo');
+              } else {
+                Navigator.pushNamed(context, '/evaluate', arguments: {
+                  "previousBPM": -1.0,
+                  "previousStress": -1.0
+                });
+              }
+            },
+          )
       ),
     );
   }

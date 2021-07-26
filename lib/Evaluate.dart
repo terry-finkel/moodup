@@ -12,6 +12,10 @@ class EvaluateView extends State<Evaluate> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
+    final double _previousBPM = arguments['previousBPM'];
+    final double _previousStress = arguments['previousStress'];
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Mood Up!"),
@@ -22,7 +26,7 @@ class EvaluateView extends State<Evaluate> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Nous vous invitons à évaluer votre niveau de stress.\n\nDe 0 (pas de stress),\nà 10 (stress le plus fort que j\'ai connu).',
+              'Nous vous invitons à évaluer votre niveau de stress.\n\nDe 0 (pas de stress),\nà 10 (stress le plus fort que j\'ai connu).',
               textAlign: TextAlign.center,
             ),
             Slider(
@@ -39,7 +43,11 @@ class EvaluateView extends State<Evaluate> with SingleTickerProviderStateMixin {
             ElevatedButton(
               child: Text('Continuer'),
               onPressed: () {
-                Navigator.pushNamed(context, '/sensor', arguments: { "stress": _stress });
+                Navigator.pushNamed(context, '/sensor', arguments: {
+                  "previousBPM": _previousBPM,
+                  "previousStress": _previousStress,
+                  "stress": _stress
+                });
               },
             )
           ],

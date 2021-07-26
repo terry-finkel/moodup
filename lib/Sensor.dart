@@ -53,6 +53,8 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
+    final double _previousBPM = arguments['previousBPM'];
+    final double _previousStress = arguments['previousStress'];
     final double _stress = arguments['stress'];
 
     return Scaffold(
@@ -90,8 +92,8 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
               ),
             ),
             Center(
-              child: _toggled
-                  ? Center(
+                child: _toggled
+                    ? Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,36 +108,47 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
                         ),
                       ],
                     ))
-                  : SizedBox.shrink()
+                    : SizedBox.shrink()
             ),
             Center(
-              child: _toggled
-                ? Text(
-                  "Placez votre index de façon à couvrir la caméra et le flash.\nUne fois que votre rythme s'est stabilise, appuyez sur le bouton ci-dessous.",
-                  style: TextStyle(
-                      backgroundColor: _toggled
-                          ? Colors.white
-                          : Colors.transparent),
-                  textAlign: TextAlign.center
+                child: _toggled
+                    ? Text(
+                    "Placez votre index de façon à couvrir la caméra et le flash.\nUne fois que votre rythme s'est stabilise, appuyez sur le bouton ci-dessous.",
+                    style: TextStyle(
+                        backgroundColor: _toggled
+                            ? Colors.white
+                            : Colors.transparent),
+                    textAlign: TextAlign.center
                 )
-                : SizedBox.shrink()
+                    : SizedBox.shrink()
             ),
             Center(
-              child: _toggled
-                ? ElevatedButton(
-                    child: Text('Continuer'),
-                    onPressed: () {
-                      if (_bpm > 50 && _bpm < 180) {
-                        _untoggle();
-                        Navigator.pushNamed(context, '/exercises',
-                            arguments: { "stress": _stress, "bpm": _bpm });
+                child: _toggled
+                    ? ElevatedButton(
+                  child: Text('Continuer'),
+                  onPressed: () {
+                    if (_bpm > 50 && _bpm < 180) {
+                      _untoggle();
+                      if (_previousStress == -1 || _previousBPM == -1) {
+                        Navigator.pushNamed(context, '/exercises', arguments: {
+                          "bpm": _bpm.toDouble(),
+                          "stress": _stress
+                        });
+                      } else {
+                        Navigator.pushNamed(context, '/result', arguments: {
+                          "bpm": _bpm.toDouble(),
+                          "previousBPM": _previousBPM,
+                          "previousStress": _previousStress,
+                          "stress": _stress
+                        });
                       }
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: (_bpm > 50 && _bpm < 180 ? Colors.blue : Colors.grey)
-                    ),
-                  )
-                : SizedBox.shrink()
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      primary: (_bpm > 50 && _bpm < 180 ? Colors.blue : Colors.grey)
+                  ),
+                )
+                    : SizedBox.shrink()
             ),
             Expanded(
               flex: 1,
