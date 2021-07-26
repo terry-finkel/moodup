@@ -29,8 +29,8 @@ class HomeView extends State<Home> with SingleTickerProviderStateMixin {
                 Navigator.pushNamed(context, '/getInfo');
               } else {
                 Navigator.pushNamed(context, '/evaluate', arguments: {
-                  "previousBPM": -1.0,
-                  "previousStress": -1.0
+                  "bpm": -1.0,
+                  "stress": -1.0
                 });
               }
             },

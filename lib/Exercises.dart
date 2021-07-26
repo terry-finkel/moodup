@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class Exercises extends StatefulWidget {
   @override
@@ -20,28 +20,28 @@ class ExercisesView extends State<Exercises> with SingleTickerProviderStateMixin
         title: Text("Mood Up!"),
       ),
       backgroundColor: Colors.white,
-      /* body: YoutubePlayer(
-        controller: YoutubePlayerController(
-          initialVideoId: 'LJ_m3boegBI', //Add videoID.
-          flags: YoutubePlayerFlags(
-            hideControls: false,
-            controlsVisibleAtStart: true,
-            autoPlay: false,
-            mute: false,
-          ),
-        ),
-        showVideoProgressIndicator: true,
-      ), */
       body: Center(
-        child: ElevatedButton(
-          child: Text('Nous vous invitons à suivre les indications du film suivant.'),
-          onPressed: () {
-            Navigator.pushNamed(context, '/evaluate', arguments: {
-              "previousBPM": _bpm,
-              "previousStress": _stress
-            });
-          },
-        )
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            YoutubePlayerIFrame(
+              controller: YoutubePlayerController(
+                  initialVideoId: 'LJ_m3boegBI'
+              ),
+              aspectRatio: 16 / 9,
+            ),
+            ElevatedButton(
+              child: Text("Continuer"),
+              onPressed: () {
+                Navigator.pushNamed(context, '/evaluate', arguments: {
+                  "bpm": _bpm,
+                  "stress": _stress
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

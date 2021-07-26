@@ -304,7 +304,6 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
       }
       if (_counter > 0) {
         _bpm = _bpm / _counter;
-        print(_bpm);
         setState(() {
           this._bpm = ((1 - _alpha) * this._bpm + _alpha * _bpm).toInt();
         });

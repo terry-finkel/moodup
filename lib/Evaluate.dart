@@ -13,8 +13,8 @@ class EvaluateView extends State<Evaluate> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
-    final double _previousBPM = arguments['previousBPM'];
-    final double _previousStress = arguments['previousStress'];
+    final double _previousBPM = arguments['bpm'];
+    final double _previousStress = arguments['stress'];
 
     return Scaffold(
       appBar: AppBar(
