@@ -35,9 +35,7 @@ dependencies:
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.9
   youtube_player_iframe: ^2.1.0
-
-  flutter_picker:
-    git: git://github.com/yangyxd/flutter_picker.git
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:

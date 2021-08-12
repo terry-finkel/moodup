@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picker/flutter_picker.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetInfo extends StatefulWidget {
@@ -12,8 +12,8 @@ class GetInfo extends StatefulWidget {
 
 class GetInfoView extends State<GetInfo> with SingleTickerProviderStateMixin {
   final List<bool> _isSelected = [true, false];
-  int _age = 0;
-  int _weight = 0;
+  int _age = 1;
+  int _weight = 30;
 
   void _setAge(int age) async {
     final prefs = await SharedPreferences.getInstance();
@@ -55,19 +55,39 @@ class GetInfoView extends State<GetInfo> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Merci de renseigner les informations suivantes:"),
-            ListTile(
-              leading: Text('Âge'),
-              title: Text(_age > 0 ? '$_age' : '...'),
-              onTap: () {
-                showAgePicker(context);
-              },
+            Row(
+              children: [
+                Text("Âge: "),
+                NumberPicker(
+                  value: _age,
+                  minValue: 1,
+                  maxValue: 99,
+                  haptics: true,
+                  axis: Axis.horizontal,
+                  itemWidth: 50,
+                  onChanged: (value) => {
+                    _setAge(value)
+                  },
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
-            ListTile(
-              leading: Text('Poids'),
-              title: Text(_weight > 0 ? '$_weight' : '...'),
-              onTap: () {
-                showWeightPicker(context);
-              },
+            Row(
+              children: [
+                Text("Poids: "),
+                NumberPicker(
+                  value: _weight,
+                  minValue: 30,
+                  maxValue: 300,
+                  haptics: true,
+                  axis: Axis.horizontal,
+                  itemWidth: 50,
+                  onChanged: (value) => {
+                    _setWeight(value)
+                  },
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
             ToggleButtons(
               children: <Widget>[
@@ -94,33 +114,5 @@ class GetInfoView extends State<GetInfo> with SingleTickerProviderStateMixin {
         ),
       ),
     );
-  }
-
-  showAgePicker(BuildContext context) {
-    Picker(
-        adapter: NumberPickerAdapter(data: [
-          NumberPickerColumn(begin: 1, end: 99),
-        ]),
-        hideHeader: true,
-        title: Text("Indiquez votre âge"),
-        selectedTextStyle: TextStyle(color: Colors.blue),
-        onConfirm: (Picker picker, List value) {
-          _setAge(picker.getSelectedValues()[0] as int);
-        }
-    ).showDialog(context);
-  }
-
-  showWeightPicker(BuildContext context) {
-    Picker(
-        adapter: NumberPickerAdapter(data: [
-          NumberPickerColumn(begin: 30, end: 300),
-        ]),
-        hideHeader: true,
-        title: Text("Indiquez votre poids"),
-        selectedTextStyle: TextStyle(color: Colors.blue),
-        onConfirm: (Picker picker, List value) {
-          _setWeight(picker.getSelectedValues()[0] as int);
-        }
-    ).showDialog(context);
   }
 }
