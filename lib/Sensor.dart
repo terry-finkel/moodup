@@ -110,66 +110,52 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
                     ))
                     : SizedBox.shrink()
             ),
-            Center(
-                child: _toggled
-                    ? Text(
-                    "Placez votre index de façon à couvrir la caméra et le flash.\nUne fois que votre rythme s'est stabilise, appuyez sur le bouton ci-dessous.",
-                    style: TextStyle(
-                        backgroundColor: _toggled
-                            ? Colors.white
-                            : Colors.transparent),
-                    textAlign: TextAlign.center
-                )
-                    : SizedBox.shrink()
-            ),
-            Center(
-                child: _toggled
-                    ? ElevatedButton(
-                  child: Text('Continuer'),
-                  onPressed: () {
-                    if (_bpm > 50 && _bpm < 180) {
-                      _untoggle();
-                      if (_previousStress == -1 || _previousBPM == -1) {
-                        Navigator.pushNamed(context, '/exercises', arguments: {
-                          "bpm": _bpm.toDouble(),
-                          "stress": _stress
-                        });
-                      } else {
-                        Navigator.pushNamed(context, '/result', arguments: {
-                          "bpm": _bpm.toDouble(),
-                          "previousBPM": _previousBPM,
-                          "previousStress": _previousStress,
-                          "stress": _stress
-                        });
-                      }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      primary: (_bpm > 50 && _bpm < 180 ? Colors.blue : Colors.grey)
-                  ),
-                )
-                    : SizedBox.shrink()
-            ),
             Expanded(
               flex: 1,
               child: Center(
-                child: Transform.scale(
-                  scale: _iconScale,
-                  child: IconButton(
-                    icon:
-                    Icon(_toggled ? Icons.favorite : Icons.favorite_border),
-                    color: Colors.red,
-                    iconSize: 128,
-                    onPressed: () {
-                      if (_toggled) {
-                        _untoggle();
-                      } else {
-                        _toggle();
-                      }
-                    },
-                  ),
-                ),
-              ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      _toggled
+                        ? "Placez votre index de façon à couvrir la caméra et le flash.\nUne fois que votre rythme s'est stabilisé, appuyez sur le bouton ci-dessous."
+                        : "Lorsque vous êtes prêt(e), appuyez sur le bouton continuer pour commencer la prise du rythme cardiaque.",
+                      style: TextStyle(
+                          backgroundColor: _toggled
+                              ? Colors.white
+                              : Colors.transparent),
+                      textAlign: TextAlign.center
+                    ),
+                    ElevatedButton(
+                      child: Text('Continuer'),
+                      style: ElevatedButton.styleFrom(
+                        primary: ((_bpm > 50 && _bpm < 180) || !_toggled ? Colors.blue : Colors.grey)
+                      ),
+                      onPressed: () {
+                        if (!_toggled) {
+                          _toggle();
+                        } else if (_bpm > 50 && _bpm < 180) {
+                          _untoggle();
+                          if (_previousStress == -1 || _previousBPM == -1) {
+                            Navigator.pushNamed(context, '/exercises', arguments: {
+                              "bpm": _bpm.toDouble(),
+                              "stress": _stress
+                            });
+                          } else {
+                            Navigator.pushNamed(context, '/result', arguments: {
+                              "bpm": _bpm.toDouble(),
+                              "previousBPM": _previousBPM,
+                              "previousStress": _previousStress,
+                              "stress": _stress
+                            });
+                          }
+                        }
+                      },
+                    )
+                  ],
+                )
+              )
             ),
             Expanded(
               flex: 1,
