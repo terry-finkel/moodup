@@ -14,7 +14,9 @@ class ExercisesView extends State<Exercises> with SingleTickerProviderStateMixin
   ChewieController _chewieController;
 
   Future<void> initializePlayer() async {
-    _videoPlayerController = VideoPlayerController.asset('/videos/river.mp4');
+    _videoPlayerController = VideoPlayerController.network(''
+        'https://github.com/p1tch-black/moodup/blob/main/videos/river.mp4?raw=true'
+    );
     await _videoPlayerController.initialize();
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -52,10 +54,6 @@ class ExercisesView extends State<Exercises> with SingleTickerProviderStateMixin
     final double _bpm = arguments['bpm'];
     final double _stress = arguments['stress'];
 
-    print("-----------------------------");
-    print(_videoPlayerController);
-    print("-----------------------------");
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Mood Up!"),
@@ -79,13 +77,13 @@ class ExercisesView extends State<Exercises> with SingleTickerProviderStateMixin
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
                           CircularProgressIndicator(),
-                          SizedBox(height: 20),
-                          Text('Loading'),
+                          SizedBox(height: 20)
                         ],
                       ),
                 ElevatedButton(
                   child: Text("Continuer"),
                   onPressed: () {
+                    _chewieController.pause();
                     Navigator.pushNamed(context, '/evaluate', arguments: {
                       "bpm": _bpm,
                       "stress": _stress

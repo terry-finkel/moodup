@@ -120,7 +120,7 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
                     Text(
                       _toggled
                         ? "Placez votre index de façon à couvrir la caméra et le flash.\nUne fois que votre rythme s'est stabilisé, appuyez sur le bouton ci-dessous."
-                        : "Lorsque vous êtes prêt(e), appuyez sur le bouton continuer pour commencer la prise du rythme cardiaque.",
+                        : "Lorsque vous êtes prêt(e), appuyez sur le bouton ci-dessous pour commencer la prise du rythme cardiaque.",
                       style: TextStyle(
                           backgroundColor: _toggled
                               ? Colors.white
@@ -135,7 +135,7 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
                       onPressed: () {
                         if (!_toggled) {
                           _toggle();
-                        } else {
+                        } else if (_bpm > 50 && _bpm < 180) {
                           _untoggle();
                           if (_previousStress == -1 || _previousBPM == -1) {
                             Navigator.pushNamed(context, '/exercises', arguments: {
