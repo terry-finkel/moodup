@@ -135,7 +135,7 @@ class SensorView extends State<Sensor> with SingleTickerProviderStateMixin {
                       onPressed: () {
                         if (!_toggled) {
                           _toggle();
-                        } else if (_bpm > 50 && _bpm < 180) {
+                        } else {
                           _untoggle();
                           if (_previousStress == -1 || _previousBPM == -1) {
                             Navigator.pushNamed(context, '/exercises', arguments: {
